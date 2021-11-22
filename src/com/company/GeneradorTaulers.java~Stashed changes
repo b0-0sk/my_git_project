@@ -1,5 +1,6 @@
 package com.company;
 
+
 public class GeneradorTaulers {
     private int boardSize;
     private int row;
@@ -8,11 +9,9 @@ public class GeneradorTaulers {
     private static final String X_CHAR_EDGE= "-";
     private static final String Y_CHAR_EDGE= "|";
     private static final String WHITE_CHESS= " ";
-    private static final String BLACK_CHESS = "#";
+    private static final String BLACK_CHESS= "#";
     private static final int DEFAULT_CELL_SPACE = 1;
-    private static final int NUM_OF_CELL_PER_LINE = 8;
-
-
+    private static final int NUM_OF_CELL_PER_ROW = 8;
 
     public void init(int sizeInput){
         this.boardSize = 8 * sizeInput;
@@ -23,18 +22,18 @@ public class GeneradorTaulers {
     public void print() {
         StringBuilder board = new StringBuilder();
         board.append(printRow(true));
-        int currentSpace = DEFAULT_CELL_SPACE;
+        int currentCellSize = DEFAULT_CELL_SPACE;
         int i = 0;
         while(i < boardSize){
 
             board.append(printRow(false));
 
-            if (currentSpace == getCellInputSize()){
+            if (currentCellSize == getCellInputSize()){
                 nextRow();
                 i++;
-                currentSpace = 1;
+                currentCellSize = 1;
             }else{
-                currentSpace++;
+                currentCellSize++;
             }
 
         }
@@ -45,35 +44,35 @@ public class GeneradorTaulers {
 
     private String createRow(boolean isEdge) {
         StringBuilder m = new StringBuilder();
-        int currentSpace = DEFAULT_CELL_SPACE;
+        int currentCellSize = DEFAULT_CELL_SPACE;
         int i = 0;
-        int size = getRowSize(isEdge);
+        int size = getSize(isEdge);
         while (i < size){
 
             if (isEdge){
                 m.append(X_CHAR_EDGE);
             }else if (getRow()%2 == 0){
-                m.append(getColumn()%2 == 0?WHITE_CHESS: BLACK_CHESS);
+                m.append(getColumn()%2 == 0?WHITE_CHESS:BLACK_CHESS);
             }else{
-                m.append(getColumn()%2 == 0? BLACK_CHESS :WHITE_CHESS);
+                m.append(getColumn()%2 == 0?BLACK_CHESS:WHITE_CHESS);
             }
 
             if(isEdge){
                 i++;
-            }else if (currentSpace == getCellInputSize()){
+            }else if (currentCellSize == getCellInputSize()){
                 nextColumn();
                 i++;
-                currentSpace = 1;
+                currentCellSize = 1;
             }else{
-                currentSpace++;
+                currentCellSize++;
             }
         }
 
         return m.toString();
     }
 
-    private int getRowSize(boolean isEdge) {
-        return isEdge?getBoardSize():NUM_OF_CELL_PER_LINE;
+    private int getSize(boolean isEdge) {
+        return isEdge?getBoardSize():NUM_OF_CELL_PER_ROW;
     }
 
     private String printRow(boolean isEdge) {
@@ -88,9 +87,11 @@ public class GeneradorTaulers {
         this.column++;
     }
 
+
     /**
-     * GETTERS
+     * Getters
      */
+
 
     public int getColumn() {
         return column;

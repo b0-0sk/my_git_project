@@ -4,27 +4,46 @@ public class GeneradorTaulers {
     private int boardSize;
     private int row;
     private int column;
-    private int fixedSize;
+    private int cellSize;
     private final String X_CHAR_EDGE= "-";
     private final String Y_CHAR_EDGE= "|";
     private final String whiteChess= " ";
     private final String blackChess= "#";
-    private final int DEFAULT_SPACE = 1;
+    private final int DEFAULT_CELL_SPACE = 1;
 
 
-    public void init(int boardSize){
-        this.boardSize = 8 * boardSize;
+    public void init(int sizeInput){
+        this.boardSize = 8 * sizeInput;
         this.row = 0;
-        this.fixedSize = this.boardSize/8;
+        this.cellSize = sizeInput;
     }
 
-    private String printRow(boolean isEdge) {
-        return Y_CHAR_EDGE + createRow(isEdge) + Y_CHAR_EDGE + "\n";
+    public void print() {
+        StringBuilder board = new StringBuilder();
+        board.append(printRow(true));
+        int currentSpace = this.DEFAULT_CELL_SPACE;
+        int i = 0;
+        while(i < boardSize){
+
+            board.append(printRow(false));
+
+            if (currentSpace == getCellSpace()){
+                nextRow();
+                i++;
+                currentSpace = 1;
+            }else{
+                currentSpace++;
+            }
+
+        }
+
+        board.append(printRow(true));
+        System.out.println(board);
     }
 
     private String createRow(boolean isEdge) {
         StringBuilder m = new StringBuilder();
-        int currentSpace = this.DEFAULT_SPACE;
+        int currentSpace = this.DEFAULT_CELL_SPACE;
         int i = 0;
         int size = isEdge == true?getBoardSize():8;
         while (i < size){
@@ -39,7 +58,7 @@ public class GeneradorTaulers {
 
             if(isEdge){
                 i++;
-            }else if (currentSpace == getFixedSpace()){
+            }else if (currentSpace == getCellSpace()){
                 nextColumn();
                 i++;
                 currentSpace = 1;
@@ -51,28 +70,8 @@ public class GeneradorTaulers {
         return m.toString();
     }
 
-    public void print() {
-        StringBuilder board = new StringBuilder();
-
-        board.append(printRow(true));
-        int currentSpace = this.DEFAULT_SPACE;
-        int i = 0;
-        while(i < boardSize){
-
-            board.append(printRow(false));
-
-            if (currentSpace == getFixedSpace()){
-                nextRow();
-                i++;
-                currentSpace = 1;
-            }else{
-                currentSpace++;
-            }
-
-        }
-
-        board.append(printRow(true));
-        System.out.println(board);
+    private String printRow(boolean isEdge) {
+        return Y_CHAR_EDGE + createRow(isEdge) + Y_CHAR_EDGE + "\n";
     }
 
     private void nextRow(){
@@ -95,8 +94,8 @@ public class GeneradorTaulers {
         this.boardSize = boardSize;
     }
 
-    public int getFixedSpace() {
-        return fixedSize;
+    public int getCellSpace() {
+        return cellSize;
     }
 
     public int getRow() {
